@@ -4,7 +4,7 @@ class HeapSort:
         self.i=i
         self.heapSize=self.arr.len()
     def left(i):
-        return 2*self.i
+        return 2*i
 
     def right(i):
         return 2*i+1
