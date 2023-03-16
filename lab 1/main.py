@@ -1,10 +1,19 @@
 import math
 import random
+import time
+
 import numpy
 
 
 def swap(array, i, j):
     array[i], array[j] = array[j], array[i]
+
+
+def calc_time(sort, array):
+    start = time.time()
+    sort(array)
+    end = time.time()
+    return end - start
 
 
 def insertion_sort(array):
@@ -29,12 +38,15 @@ def selection_sort(array):
 
 
 def merge_sort(array):
-    a = list(numpy.array(array, copy=True))
-    if (len(a) > 1):
+    return merge_sort_recursion(list(numpy.array(array, copy=True)), 1)
+
+
+def merge_sort_recursion(a, threshold):
+    if (len(a) > threshold):
         mid = len(a) // 2
         l = list(a[:mid])
         r = list(a[mid:])
-        return numpy.array(merge(merge_sort(l), merge_sort(r)))
+        return numpy.array(merge(merge_sort_recursion(l, threshold), merge_sort_recursion(r, threshold)))
     else:
         return a
 
@@ -42,7 +54,6 @@ def merge_sort(array):
 def merge(left, right):
     left_count = right_count = 0
     result = list()
-    # print(left, '*****', right)
     while (left_count <= len(left) - 1 and right_count <= len(right) - 1):
         if (left[left_count] >= right[right_count]):
             result.append(right[right_count])
@@ -54,7 +65,6 @@ def merge(left, right):
         result.extend(right[right_count:])
     if (left_count <= len(left) - 1):
         result.extend(left[left_count:])
-    # print(">>>", result)
     return result
 
 
@@ -143,37 +153,46 @@ def quick_sort(a):
     return quick_sort_recursion(numpy.array(a, copy=True), 0, len(a) - 1)
 
 
-def hybrid_sort(arr):
-    if len(arr) <= 10:
-        return insertion_sort(arr)
+def hybrid_merge_selection_sort(array, threshold):
+    a = list(numpy.array(array, copy=True))
+    if (len(a) > threshold):
+        mid = len(a) // 2
+        l = list(a[:mid])
+        r = list(a[mid:])
+        return numpy.array(merge(hybrid_merge_selection_sort(l, threshold), hybrid_merge_selection_sort(r, threshold)))
     else:
-        pivot = arr[len(arr) // 2]
-        leftHybrid = [x for x in arr if x < pivot]
-        midHybrid = [x for x in arr if x == pivot]
-        rightHybrid = [x for x in arr if x > pivot]
-        return hybrid_sort(leftHybrid) + midHybrid + hybrid_sort(rightHybrid)
+        return selection_sort(array)
 
 
-# def insertion_hybrid_sort(arr):
-#     # for i in range(0, len(arr)):
-#     key = len(arr) - 1
-#     j = len(arr) - 1
-#     while j >= 0:
-#         if key < arr[j]:
-#             arr[j + 1] = arr[j]
-#             j -= 1
-#             arr[j + 1] = key
-#     return arr
+def find_kth_smallest(array, k):
+    a = numpy.array(array, copy=True)
+    if (k <= len(a)):
+        return kth_smallest(a, k, 0, len(a) - 1)
+    return -1
 
 
-a = numpy.random.randint(10, size=11)
-print(f"Randomly Array : {a}")
-print(f"Quick Sort :     {quick_sort(a)}")
-print(f"Merge Sort :     {merge_sort(a)}")
-print(f"Heap Sort :      {heap_sort(a)}")
-print(f"Selection Sort : {selection_sort(a)}")
-print(f"Insertion Sort : {insertion_sort(a)}")
-print("HEAP :")
-print_tree(a)
-print(f"Hybrid Sort : {hybrid_sort(a)}")
+def kth_smallest(array, k, low, high):
+    if (low == high):
+        return array[low]
+    wall = partition(array, low, high)
+    index = wall - low + 1
+    if (index == k):
+        return array[wall]
+    if (index > k):
+        return kth_smallest(array, k, low, wall - 1)
+    else:
+        return kth_smallest(array, k - index, wall + 1, high)
 
+
+size = 100
+a = numpy.random.randint(size, size=size)
+# print(f"Randomly Array : {a}")
+print(f"Quick Sort :     {calc_time(quick_sort, a)}")
+print(f"Merge Sort :     {calc_time(merge_sort, a)}")
+print(f"Heap Sort :      {calc_time(heap_sort, a)}")
+print(f"Selection Sort : {calc_time(selection_sort, a)}")
+print(f"Insertion Sort : {calc_time(insertion_sort, a)}")
+# print(hybrid_merge_selection_sort(a, 4))
+# print('\n', find_kth_smallest(a, 10), '\n')
+# print("HEAP :")
+# print_tree(a)
