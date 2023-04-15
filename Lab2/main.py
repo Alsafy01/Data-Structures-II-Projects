@@ -1,3 +1,6 @@
+
+from colorama import Fore, Back, Style
+
 class Node:
     def __init__(self, value):
         self.value = value
@@ -6,23 +9,18 @@ class Node:
         self.left = None
         self.color = 'R'
 
-    def switch_color(self):
-        if self.color == 'R':
-            self.color = 'B'
-        else:
-            self.color = 'R'
-
 
 class RBtree:
     def __init__(self):
         self.root = None
-        self.hight = -1
+        self.tree_size = -1
 
     def insert(self, value):
         x = self.root
         if (x == None):
             self.root = Node(value)
             self.root.color = 'B'
+            self.tree_size += 1
         else:
             while (x != None):
                 if (value > x.value):  # value greater than the root, go right
@@ -31,6 +29,7 @@ class RBtree:
                     else:  # if that right is empty insert node
                         x.right = Node(value)
                         x.right.parent = x
+                        self.tree_size += 1
                         self.fix_insertion(x.right)
                         break
                 else:  # value less or equal the root, go left
@@ -39,6 +38,7 @@ class RBtree:
                     else:  # if that left is empty insert node
                         x.left = Node(value)
                         x.left.parent = x
+                        self.tree_size += 1
                         self.fix_insertion(x.left)
                         break
 
@@ -118,6 +118,24 @@ class RBtree:
 
         return max_depth(self.root) - 1
 
+    def size(self):
+        return self.tree_size
+
+    def search(self, value):
+
+        def tree_search(node):
+            if(node != None):
+                if(node.value == value):
+                    return node
+                elif(node.value < value):
+                    return tree_search(node.right)
+                else:
+                    return tree_search(node.left)
+            else:
+                return node
+
+        return tree_search(self.root)
+
     def print_RBtree(self):
         arr = []
         max_spaces = int(pow(2, self.depth()))
@@ -144,7 +162,11 @@ class RBtree:
                         arr.append(arr[0].right)
                     else:
                         arr.append(' ')
-                    print(arr.pop(0).value, end='')
+                    if(arr[0].color == 'R'):
+                        print(Fore.RED + f"{arr.pop(0).value}", end='')
+                        print(Style.RESET_ALL, end='')
+                    else:
+                        print(arr.pop(0).value, end='')
                 else:
                     arr.append(' ')
                     arr.append(' ')
@@ -159,5 +181,8 @@ tree = RBtree()
 for i in range(1, 11):
     tree.insert(i)
 
+print("size:", tree.size())
 print("depth:", tree.depth())
 tree.print_RBtree()
+
+
