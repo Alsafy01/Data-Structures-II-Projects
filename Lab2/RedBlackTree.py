@@ -4,7 +4,7 @@ from colorama import Fore, Back, Style
 class RBtree:
     def __init__(self):
         self.root = None
-        self.tree_size = -1
+        self.tree_size = 0
 
     def insert(self, value):
         x = self.root
