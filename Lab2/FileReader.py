@@ -3,7 +3,7 @@ from RedBlackTree import RBtree
 
 class Dictionary:
     def __init__(self):
-        self.path = "Dictionary.txt"
+        self.path = "numbers.txt"
         self.dictionary = ''
         self.dictionaryData = ''
         self.dictionaryTree = ''
@@ -35,7 +35,7 @@ class Dictionary:
     def lookUp(self):
         print("Enter the word you want to search: ")
         lookUpWord = input()
-        if (self.dictionaryTree.search(lookUpWord + "\n") == None):
+        if (self.dictionaryTree.search(lookUpWord) == None):
             print("NO")
         else:
             print("YES")
