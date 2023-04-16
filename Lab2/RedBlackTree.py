@@ -7,31 +7,31 @@ class RBtree:
         self.tree_size = 0
 
     def insert(self, value):
+        node = Node(value)
+        node.value = value
+        node.color = 'R'
+        self.tree_size = self.tree_size + 1
+
         x = self.root
-        if (x == None):
-            self.root = Node(value)
-            self.root.color = 'B'
-            self.tree_size += 1
+        while x != None:  # Find position for new node
+            node.parent = x  # and set the last none null node as it's parent
+            if node.value < x.value:
+                x = x.left
+            else:
+                x = x.right
+
+        if node.parent == None:  # If parent is null, then it is root node
+            self.root = node
+            node.color = 'B'
+            return
+        elif node.value < node.parent.value:  # Check if it is right Node or Left Node by checking the value
+            node.parent.left = node
         else:
-            while (x != None):
-                if (value > x.value):  # value greater than the root, go right
-                    if (x.right != None):
-                        x = x.right
-                    else:  # if that right is empty insert node
-                        x.right = Node(value)
-                        x.right.parent = x
-                        self.tree_size += 1
-                        self.fix_insertion(x.right)
-                        break
-                else:  # value less or equal the root, go left
-                    if (x.left != None):
-                        x = x.left
-                    else:  # if that left is empty insert node
-                        x.left = Node(value)
-                        x.left.parent = x
-                        self.tree_size += 1
-                        self.fix_insertion(x.left)
-                        break
+            node.parent.right = node
+
+        if node.parent.parent == None:  # If parent of node is Root Node
+            return
+        self.fix_insertion(node)  # fix last insertion
 
     def rotate_left(self, parent):
         node = parent.right

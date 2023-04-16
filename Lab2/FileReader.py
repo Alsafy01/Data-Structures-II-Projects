@@ -23,10 +23,10 @@ class Dictionary:
 
     def insertWord(self):
         print("Enter the word: ")
-        word = input()
-        if (self.dictionaryTree.search(word + "\n") == None):
+        word = input().strip()
+        if (self.dictionaryTree.search(word) == None):
             self.dictionary = open(self.path, 'a')
-            self.dictionary.write(word + "\n")
+            self.dictionary.write(word)
             self.dictionary.close()
             self.dictionaryTree.insert(word)
         else:
