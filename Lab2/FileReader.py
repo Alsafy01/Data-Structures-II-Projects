@@ -27,6 +27,7 @@ class Dictionary:
             self.dictionary=open(self.path,'a')
             self.dictionary.write(word+"\n")
             self.dictionary.close()
+            self.dictionaryTree.insert(word)
         else:
             print("ERROR: Word already in the dictionary!")
 
