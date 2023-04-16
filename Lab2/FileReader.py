@@ -1,19 +1,20 @@
 from RedBlackTree import RBtree
 
+
 class Dictionary:
     def __init__(self):
-        self.path="Dictionary.txt"
-        self.dictionary=''
-        self.dictionaryData=''
-        self.dictionaryTree=''
+        self.path = "Dictionary.txt"
+        self.dictionary = ''
+        self.dictionaryData = ''
+        self.dictionaryTree = ''
 
     def loadDictionary(self):
-        self.dictionary=open(self.path,'r')
+        self.dictionary = open(self.path, 'r')
         self.dictionaryData = self.dictionary.readlines()
         self.dictionary.close()
         self.dictionaryTree = RBtree()
         for i in range(0, len(self.dictionaryData)):
-            self.dictionaryTree.insert(self.dictionaryData[i])
+            self.dictionaryTree.insert(self.dictionaryData[i].strip())
 
     def printDictionary(self):
         print("size:", self.dictionaryTree.size())
@@ -22,10 +23,10 @@ class Dictionary:
 
     def insertWord(self):
         print("Enter the word: ")
-        word=input()
-        if (self.dictionaryTree.search(word+"\n") == None):
-            self.dictionary=open(self.path,'a')
-            self.dictionary.write(word+"\n")
+        word = input()
+        if (self.dictionaryTree.search(word + "\n") == None):
+            self.dictionary = open(self.path, 'a')
+            self.dictionary.write(word + "\n")
             self.dictionary.close()
             self.dictionaryTree.insert(word)
         else:
@@ -33,9 +34,8 @@ class Dictionary:
 
     def lookUp(self):
         print("Enter the word you want to search: ")
-        lookUpWord=input()
-        if (self.dictionaryTree.search(lookUpWord+"\n") == None):
+        lookUpWord = input()
+        if (self.dictionaryTree.search(lookUpWord + "\n") == None):
             print("NO")
         else:
             print("YES")
-
