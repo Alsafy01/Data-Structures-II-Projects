@@ -31,6 +31,7 @@ class RBtree:
 
         if node.parent.parent == None:  # If parent of node is Root Node
             return
+
         self.fix_insertion(node)  # fix last insertion
 
     def rotate_left(self, parent):
@@ -63,7 +64,7 @@ class RBtree:
         else:
             parent.parent.left = node
         node.right = parent
-        node.parent = parent
+        parent.parent = node
 
     def fix_insertion(self, node):
         while (node.parent != None):  # as long the parent isn't black or None
@@ -129,7 +130,10 @@ class RBtree:
 
     def print_RBtree(self):
         arr = []
-        max_spaces = int(pow(2, self.depth()))
+        if(self.depth() > 3):
+            max_spaces = int(pow(2, 3))
+        else:
+            max_spaces = int(pow(2, self.depth()))
         arr.append(self.root)
 
         def num_of_nums(arr):
@@ -138,8 +142,8 @@ class RBtree:
                 if (i == ' '):
                     num -= 1
             return num
-
-        while (num_of_nums(arr) != 0):
+        flag = 0
+        while (num_of_nums(arr) != 0 and flag !=4):
             length = len(arr)
             for j in range(0, length):
                 for k in range(max_spaces):
@@ -166,3 +170,7 @@ class RBtree:
                     print('  ', end='')
             max_spaces = max_spaces // 2
             print('\n')
+            flag = flag + 1
+            if(flag == 4):
+                print(Fore.BLUE +".................etc")
+                print(Style.RESET_ALL)

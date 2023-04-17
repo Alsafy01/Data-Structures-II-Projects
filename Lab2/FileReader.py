@@ -3,7 +3,7 @@ from RedBlackTree import RBtree
 
 class Dictionary:
     def __init__(self):
-        self.path = "numbers.txt"
+        self.path = "EN-US-Dictionary.txt"
         self.dictionary = ''
         self.dictionaryData = ''
         self.dictionaryTree = ''
@@ -14,7 +14,8 @@ class Dictionary:
         self.dictionary.close()
         self.dictionaryTree = RBtree()
         for i in range(0, len(self.dictionaryData)):
-            self.dictionaryTree.insert(self.dictionaryData[i].strip())
+            if self.dictionaryData[i] != None:
+                self.dictionaryTree.insert(self.dictionaryData[i].strip())
 
     def printDictionary(self):
         print("size:", self.dictionaryTree.size())
@@ -26,7 +27,7 @@ class Dictionary:
         word = input().strip()
         if (self.dictionaryTree.search(word) == None):
             self.dictionary = open(self.path, 'a')
-            self.dictionary.write(word)
+            self.dictionary.write("\n" + word)
             self.dictionary.close()
             self.dictionaryTree.insert(word)
         else:
