@@ -1,3 +1,5 @@
+import array
+
 from AppOpener import open, close
 import pyautogui
 import time
@@ -10,7 +12,6 @@ def detect_image(image):
             return
         except Exception as e:
             pass
-
 
 
 def bechmark(app_name):
@@ -33,9 +34,10 @@ def bechmark(app_name):
         end = time.time()
         close(app_name)
         time.sleep(1)
-        a.append(end-start)
-
+        a.append(end - start)
     return a
 
 
-print(bechmark("whatsapp"))
+a = [bechmark("whatsapp"), bechmark("whatsapp"), bechmark("whatsapp"), bechmark("whatsapp"), bechmark("whatsapp")]
+for i in a:
+    print(i)
