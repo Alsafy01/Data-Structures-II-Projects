@@ -14,7 +14,7 @@ def detect_image(image):
 
 
 def bechmark(app_name):
-
+    a = []
     match app_name:
         case "whatsapp":
             image = "img.png"
@@ -26,14 +26,16 @@ def bechmark(app_name):
             image = "img.png"
         case "netbeans":
             image = "img.png"
+    for i in range(0, 5):
+        open(app_name)
+        start = time.time()
+        detect_image(image)
+        end = time.time()
+        close(app_name)
+        time.sleep(1)
+        a.append(end-start)
 
-    open(app_name)
-    start = time.time()
-    detect_image(image)
-    end = time.time()
-    close(app_name)
-
-    return end - start
+    return a
 
 
 print(bechmark("whatsapp"))
