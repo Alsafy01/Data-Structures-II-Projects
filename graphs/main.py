@@ -110,7 +110,6 @@ def print_graph(matrix):
             count = 1
             for j in matrix[i-1]:
                 if(j != 0):
-                    print(i, '***', count)
                     G.add_edge(i, count, weight=j)
                 count += 1
         elarge = [(u, v) for (u, v, d) in G.edges(data=True)]
