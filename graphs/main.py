@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from typing import List, Dict  # For annotations
-import matplotlib
+from colorama import Fore, Style
 
 
 class Node:
@@ -32,7 +32,8 @@ class Graph:
         priority_queue = {Node(self.source): 0}
         visited = [False] * len(self.adjlist)
         min_span_tree_cost = 0
-
+        print(Fore.LIGHTYELLOW_EX + "\t P R I M ' S \t M S T")
+        print(Style.RESET_ALL, end='')
         while priority_queue:
             # Choose the adjacent node with the least edge cost
             node = min(priority_queue, key=priority_queue.get)  # min priority queue
@@ -44,8 +45,8 @@ class Graph:
             if visited[node._id] == False:
                 min_span_tree_cost += cost
                 visited[node._id] = True
-                print("Added Node : " + str(node._id) + ", cost now : " + str(
-                    min_span_tree_cost) + ", Parent Node : " + str(node.parent) + ", Edge weight : " + str(cost))
+                print("Added Node (" + str(node._id) + "), Parent Node (" + str(node.parent) +"), cost now : " + str(
+                    min_span_tree_cost) + ", Edge weight : " + str(cost))
                 MST.append([node.parent, node._id, cost])
 
                 for item in self.adjlist[node._id]:
@@ -63,7 +64,8 @@ class Graph:
         priority_queue = {Node(self.source): 0}
         distance = [False] * len(self.adjlist)
         distance[0] = 0
-
+        print(Fore.LIGHTYELLOW_EX + "\t D I J K S T R A ' S \t M S T")
+        print(Style.RESET_ALL, end='')
         """ DIJKSTRA'S SHORTEST PATH ALGORITHM """
         while priority_queue:
             # Choose the adjacent node with the least edge cost
