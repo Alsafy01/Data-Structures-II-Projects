@@ -1,9 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from typing import List, Dict  # For annotations
-
-
-MST = []
+import matplotlib
 
 
 class Node:
@@ -19,8 +17,8 @@ class Graph:
         self.source = source
         self.adjlist = adj_list
 
-    def PrimsMST(self) -> int:
-        MST.clear()
+    def Prim_MST(self) -> int:
+        MST =[]
         # Priority queue is implemented as a dictionary with
         # key as an object of 'Node' class and value as the cost of
         # reaching the node from the source.
@@ -46,7 +44,8 @@ class Graph:
             if visited[node._id] == False:
                 min_span_tree_cost += cost
                 visited[node._id] = True
-                print("Added Node : " + str(node._id) + ", cost now : " + str(min_span_tree_cost) +", Parent Node : " + str(node.parent) + ", Edge weight : " + str(cost))
+                print("Added Node : " + str(node._id) + ", cost now : " + str(
+                    min_span_tree_cost) + ", Parent Node : " + str(node.parent) + ", Edge weight : " + str(cost))
                 MST.append([node.parent, node._id, cost])
 
                 for item in self.adjlist[node._id]:
@@ -56,10 +55,51 @@ class Graph:
                         vertex = Node(adjnode)
                         priority_queue[vertex] = adjcost
                         vertex.parent = node._id
-        return min_span_tree_cost
+        return MST
+
+    def Dijkstra_MST(self) -> int:
+        MST = [[None, 0, 0]]  # for printing
+
+        priority_queue = {Node(self.source): 0}
+        distance = [False] * len(self.adjlist)
+        distance[0] = 0
+
+        """ DIJKSTRA'S SHORTEST PATH ALGORITHM """
+        while priority_queue:
+            # Choose the adjacent node with the least edge cost
+            node = min(priority_queue, key=priority_queue.get)  # min priority queue
+            # Remove the node from the priority queue
+            del priority_queue[node]
+            # get all the adja
+            for item in self.adjlist[node._id]:
+                adjnode = item[0]
+                adjcost = item[1]
+                if distance[adjnode] is False or distance[adjnode] > distance[node._id] + adjcost:
+                    vertex = Node(adjnode)
+                    vertex.parent = node._id
+                    distance[adjnode] = distance[node._id] + adjcost
+                    priority_queue[vertex] = adjcost
+                    """ END """
+
+                    flag = False
+                    for element in MST:
+                        if element[1] == adjnode:
+                            flag = True
+                            break
+                    if flag:
+                        element[0] = node._id
+                        element[3] = adjcost
+                    else:
+                        MST.append([node._id, adjnode, adjcost])
+
+        # return min_span_tree_cost
+        for i in range(len(self.adjlist)):
+            print("Source Node (" + str(self.source + 1) + ")  -> Destination Node(" + str(i + 1) + ")  : "
+                  + str(distance[i]))
+        return MST
 
 
-def matrix_MST(matrix):
+def matrix_to_graph_plug(matrix):
     vertex_num = len(matrix)
     if (vertex_num != len(matrix[0]) or vertex_num == 0):
         raise Exception("Sorry, matrix have to be square matrix")
@@ -74,27 +114,19 @@ def matrix_MST(matrix):
             count += 1
         g1_edges_from_node[i] = a
 
-    # g1_edges_from_node[0] = [(1, 1), (2, 2), (3, 1), (4, 1), (5, 2), (6, 1)]
-    # g1_edges_from_node[1] = [(0, 1), (2, 2), (6, 2)]
-    # g1_edges_from_node[2] = [(0, 2), (1, 2), (3, 1)]
-    # g1_edges_from_node[3] = [(0, 1), (2, 1), (4, 2)]
-    # g1_edges_from_node[4] = [(0, 1), (3, 2), (5, 2)]
-    # g1_edges_from_node[5] = [(0, 2), (4, 2), (6, 1)]
-    # g1_edges_from_node[6] = [(0, 1), (2, 2), (5, 1)]
+    g = Graph(0, g1_edges_from_node)
 
-    g1 = Graph(0, g1_edges_from_node)
-    cost = g1.PrimsMST()
-    print("Cost of the minimum spanning tree in graph 1 : " + str(cost) + "\n")
+    return g
 
 
-def graph_matrix_plug(array):
-    size = len(array)
+def MST_to_matrix_plug(MST):
+    size = len(MST)
     if (size == 0):
         raise Exception("ERROR, call 'matrix_MST' function first")
     matrix = []
     for i in range(0, size):
         a = [0] * size
-        for v in array:
+        for v in MST:
             if (v[0] != None and v[0] == i):
                 a[v[1]] = v[2]
         matrix.append(a)
@@ -104,12 +136,12 @@ def graph_matrix_plug(array):
 
 def print_graph(matrix):
     vertex_num = len(matrix)
-    if( vertex_num == len(matrix[0])):
+    if (vertex_num == len(matrix[0])):
         G = nx.Graph()
-        for i in range(1,vertex_num+1):
+        for i in range(1, vertex_num + 1):
             count = 1
-            for j in matrix[i-1]:
-                if(j != 0):
+            for j in matrix[i - 1]:
+                if (j != 0):
                     G.add_edge(i, count, weight=j)
                 count += 1
         elarge = [(u, v) for (u, v, d) in G.edges(data=True)]
@@ -137,6 +169,8 @@ matrix = [[0, 1, 2, 1, 1, 2, 1],
           [1, 0, 0, 2, 0, 2, 0],
           [2, 0, 0, 0, 2, 0, 1],
           [1, 0, 2, 0, 0, 1, 0]]
-matrix_MST(matrix)
+G = matrix_to_graph_plug(matrix)
+
 print_graph(matrix)
-print_graph(graph_matrix_plug(MST))
+print_graph(MST_to_matrix_plug(G.Prim_MST()))
+print_graph(MST_to_matrix_plug(G.Dijkstra_MST()))
