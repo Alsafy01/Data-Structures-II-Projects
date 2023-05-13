@@ -20,7 +20,7 @@ class Graph:
         self.adjlist = adj_list
 
     def PrimsMST(self) -> int:
-
+        MST.clear()
         # Priority queue is implemented as a dictionary with
         # key as an object of 'Node' class and value as the cost of
         # reaching the node from the source.
@@ -32,7 +32,7 @@ class Graph:
         # The distance of source node from itself is 0. Add source node as the first node
         # in the priority queue
         priority_queue = {Node(self.source): 0}
-        added = [False] * len(self.adjlist)
+        visited = [False] * len(self.adjlist)
         min_span_tree_cost = 0
 
         while priority_queue:
@@ -43,16 +43,16 @@ class Graph:
             # Remove the node from the priority queue
             del priority_queue[node]
 
-            if added[node._id] == False:
+            if visited[node._id] == False:
                 min_span_tree_cost += cost
-                added[node._id] = True
+                visited[node._id] = True
                 print("Added Node : " + str(node._id) + ", cost now : " + str(min_span_tree_cost) +", Parent Node : " + str(node.parent) + ", Edge weight : " + str(cost))
                 MST.append([node.parent, node._id, cost])
 
                 for item in self.adjlist[node._id]:
                     adjnode = item[0]
                     adjcost = item[1]
-                    if added[adjnode] == False:
+                    if visited[adjnode] == False:
                         vertex = Node(adjnode)
                         priority_queue[vertex] = adjcost
                         vertex.parent = node._id
