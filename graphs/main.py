@@ -34,6 +34,7 @@ class Graph:
         min_span_tree_cost = 0
         print(Fore.LIGHTYELLOW_EX + "\t P R I M ' S \t M S T")
         print(Style.RESET_ALL, end='')
+        """ PRIM'S SHORTEST PATH ALGORITHM """
         while priority_queue:
             # Choose the adjacent node with the least edge cost
             node = min(priority_queue, key=priority_queue.get)  # min priority queue
@@ -56,6 +57,7 @@ class Graph:
                         vertex = Node(adjnode)
                         priority_queue[vertex] = adjcost
                         vertex.parent = node._id
+        """ END """
         return MST
 
     def Dijkstra_MST(self) -> int:
