@@ -5,8 +5,12 @@ from colorama import Fore, Style
 class Graph:
 
     def __init__(self, source: int, adj_list: Dict[int, List[int]]):
-        self.source = source
-        self.adjlist = adj_list
+        if source < 1 or source > len(adj_list) :
+            raise Exception(Fore.LIGHTYELLOW_EX + f"ERROR, Choose node between 1 to {len(adj_list)}")
+            print(Style.RESET_ALL, end='')
+        else:
+            self.source = source - 1
+            self.adjlist = adj_list
 
     def Prim_MST(self) -> int:
         MST =[]

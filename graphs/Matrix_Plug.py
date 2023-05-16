@@ -1,8 +1,12 @@
 from Graph import Graph
-def matrix_to_graph_plug(matrix):
+from colorama import Fore, Style
+
+
+def matrix_to_graph_plug(matrix, start):
     vertex_num = len(matrix)
     if (vertex_num != len(matrix[0]) or vertex_num == 0):
-        raise Exception("Sorry, matrix have to be square matrix")
+        raise Exception(Fore.LIGHTYELLOW_EX + "ERROR, matrix have to be square matrix")
+        print(Style.RESET_ALL, end='')
     g1_edges_from_node = {}
     # Outgoing edges from the node: (adjacent_node, cost) in graph 1.
     for i in range(0, vertex_num):
@@ -14,7 +18,7 @@ def matrix_to_graph_plug(matrix):
             count += 1
         g1_edges_from_node[i] = a
 
-    g = Graph(0, g1_edges_from_node)
+    g = Graph(start, g1_edges_from_node)
 
     return g
 
@@ -22,7 +26,8 @@ def matrix_to_graph_plug(matrix):
 def MST_to_matrix_plug(MST):
     size = len(MST)
     if (size == 0):
-        raise Exception("ERROR, call 'matrix_MST' function first")
+        raise Exception(Fore.LIGHTYELLOW_EX + "ERROR, call 'matrix_MST' function first")
+        print(Style.RESET_ALL, end='')
     matrix = []
     for i in range(0, size):
         a = [0] * size
