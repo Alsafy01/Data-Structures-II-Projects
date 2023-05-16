@@ -34,10 +34,8 @@ class Graph:
             # Choose the adjacent node with the least edge cost
             node = min(priority_queue, key=priority_queue.get)  # min priority queue
             cost = priority_queue[node]
-
             # Remove the node from the priority queue
             del priority_queue[node]
-
             if visited[node._id] == False:
                 min_span_tree_cost += cost
                 visited[node._id] = True
@@ -63,13 +61,14 @@ class Graph:
         distance[0] = 0
         print(Fore.LIGHTYELLOW_EX + "\t D I J K S T R A ' S \t M S T")
         print(Style.RESET_ALL, end='')
+
         """ DIJKSTRA'S SHORTEST PATH ALGORITHM """
         while priority_queue:
             # Choose the adjacent node with the least edge cost
             node = min(priority_queue, key=priority_queue.get)  # min priority queue
             # Remove the node from the priority queue
             del priority_queue[node]
-            # get all the adja
+            # get all the adjacent
             for item in self.adjlist[node._id]:
                 adjnode = item[0]
                 adjcost = item[1]
@@ -87,7 +86,7 @@ class Graph:
                             break
                     if flag:
                         element[0] = node._id
-                        element[3] = adjcost
+                        element[2] = adjcost
                     else:
                         MST.append([node._id, adjnode, adjcost])
 
